@@ -130,7 +130,7 @@ export default function ResultsManagement() {
         marks,
         max_marks: maxMarks,
         grade,
-        exam_date: formData.exam_date
+        exam_date: new Date(formData.exam_date).toISOString().split('T')[0]
       }
 
       if (editingResult) {
@@ -157,7 +157,7 @@ export default function ResultsManagement() {
       }
     } catch (error) {
       console.error('Error saving result:', error)
-      alert('Error saving result')
+      alert('Error saving result: ' + (error as any).message)
     }
   }
 

@@ -70,17 +70,11 @@ export default function LibraryModule() {
         .insert({
           book_id: bookId,
           student_id: student.id,
-          status: 'pending'
+          status: 'pending',
+          request_date: new Date().toISOString()
         })
 
       if (!error) {
-        // Update available copies locally
-        setBooks(books.map(book => 
-          book.id === bookId 
-            ? { ...book, available_copies: book.available_copies - 1 }
-            : book
-        ))
-        
         // Reload borrowed books
         loadBorrowedBooks(student.id)
         
@@ -88,7 +82,7 @@ export default function LibraryModule() {
       }
     } catch (error) {
       console.error('Error requesting book:', error)
-      alert('Failed to request book')
+      alert('Failed to request book: ' + (error as any).message)
     }
   }
 

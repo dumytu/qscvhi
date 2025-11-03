@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { getCurrentUser } from '../../lib/auth'
 import { supabase } from '../../lib/supabase'
+import { generateAIResponse } from '../../lib/openai'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
@@ -54,25 +55,12 @@ export default function AIDoubtModule() {
 
     setProcessing(true)
     
-    // Add user query to the list immediately
-    const userQuery: AIQuery = {
-      id: `temp-${Date.now()}`,
-      student_id: student.id,
-      query: currentQuery.trim(),
-      ai_response: '',
-      is_forwarded_to_teacher: false,
-      teacher_response: '',
-      subject: selectedSubject || 'General',
-      created_at: new Date().toISOString()
-    }
-    
-    setQueries(prev => [...prev, userQuery])
     const queryText = currentQuery.trim()
     setCurrentQuery('')
 
     try {
-      // Simulate AI response (in real app, call OpenAI API)
-      const aiResponse = await generateAIResponse(queryText, selectedSubject)
+      // Generate AI response using OpenAI
+      const aiResponse = await generateAIResponse(queryText, selectedSubject || 'General')
       
       const { data, error } = await supabase
         .from('ai_queries')
@@ -86,50 +74,14 @@ export default function AIDoubtModule() {
         .single()
 
       if (data && !error) {
-        // Replace temp query with real one
-        setQueries(prev => prev.map(q => 
-          q.id === userQuery.id ? data : q
-        ))
+        // Add the new query to the list
+        setQueries(prev => [...prev, data])
       }
     } catch (error) {
       console.error('Error submitting query:', error)
     } finally {
       setProcessing(false)
     }
-  }
-
-  const generateAIResponse = async (query: string, subject: string): Promise<string> => {
-    // Simulate AI processing delay
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    // Simple response generation (in real app, use OpenAI API)
-    const responses = {
-      'Mathematics': [
-        "Let me help you with this math problem. Here's a step-by-step approach:",
-        "This is a great mathematical question! Let's break it down:",
-        "For this math concept, I recommend starting with the basics:"
-      ],
-      'Science': [
-        "This is an interesting scientific question! Let me explain:",
-        "Science is fascinating! Here's what you need to know:",
-        "Great scientific curiosity! Let me break this down for you:"
-      ],
-      'English': [
-        "This is a good English language question. Here's my explanation:",
-        "Let me help you understand this English concept:",
-        "English can be tricky, but here's a clear explanation:"
-      ],
-      'General': [
-        "That's a thoughtful question! Here's what I think:",
-        "Let me help you understand this concept:",
-        "Great question! Here's a comprehensive answer:"
-      ]
-    }
-    
-    const subjectResponses = responses[subject as keyof typeof responses] || responses['General']
-    const randomResponse = subjectResponses[Math.floor(Math.random() * subjectResponses.length)]
-    
-    return `${randomResponse}\n\nBased on your query about "${query}", I'd suggest focusing on the fundamental concepts first. If you need more detailed explanation or have follow-up questions, feel free to ask!\n\nWould you like me to forward this to your subject teacher for additional guidance?`
   }
 
   const forwardToTeacher = async (queryId: string) => {
@@ -298,7 +250,7 @@ export default function AIDoubtModule() {
                 )}
 
                 {/* Processing Indicator */}
-                {query.id.startsWith('temp-') && processing && (
+                {processing && queries.length === 0 && (
                   <div className="flex justify-start">
                     <div className="max-w-xs lg:max-w-md">
                       <div className="bg-gray-100 text-gray-600 px-4 py-2 rounded-lg">

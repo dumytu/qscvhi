@@ -57,7 +57,8 @@ export default function VoiceLinkModule() {
           type: requestType,
           subject: subject.trim(),
           description: description.trim(),
-          status: 'pending'
+          status: 'pending',
+          created_at: new Date().toISOString()
         })
 
       if (!error) {
@@ -69,7 +70,7 @@ export default function VoiceLinkModule() {
       }
     } catch (error) {
       console.error('Error submitting request:', error)
-      alert('Failed to submit request')
+      alert('Failed to submit request: ' + (error as any).message)
     } finally {
       setSubmitting(false)
     }

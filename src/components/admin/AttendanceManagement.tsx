@@ -131,18 +131,17 @@ export default function AttendanceManagement() {
             is_present: isPresent,
             remarks
           })
-          .select(`
-            *,
-            student:students(*)
-          `)
+          .select('*')
           .single()
 
         if (data && !error) {
-          setAttendance(prev => [...prev, data])
+          // Reload attendance to get updated data with student info
+          loadAttendance()
         }
       }
     } catch (error) {
       console.error('Error marking attendance:', error)
+      alert('Error marking attendance: ' + (error as any).message)
     }
   }
 

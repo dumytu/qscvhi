@@ -76,12 +76,16 @@ export default function LibraryManagement() {
         subject: formData.subject,
         isbn: formData.isbn,
         total_copies: parseInt(formData.total_copies),
-        available_copies: parseInt(formData.total_copies),
+        available_copies: editingBook ? editingBook.available_copies : parseInt(formData.total_copies),
         description: formData.description
       }
 
       if (editingBook) {
         // Update existing book
+        // Preserve available_copies when updating
+        const availableDiff = parseInt(formData.total_copies) - editingBook.total_copies
+        bookData.available_copies = Math.max(0, editingBook.available_copies + availableDiff)
+        
         const { error } = await supabase
           .from('books')
           .update(bookData)
@@ -106,7 +110,7 @@ export default function LibraryManagement() {
       }
     } catch (error) {
       console.error('Error saving book:', error)
-      alert('Error saving book')
+      alert('Error saving book: ' + (error as any).message)
     }
   }
 

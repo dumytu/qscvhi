@@ -59,7 +59,8 @@ export default function ChatModule() {
           sender_type: 'student',
           class_id: student.class_id,
           message_type: 'group',
-          content: newMessage.trim()
+          content: newMessage.trim(),
+          sent_at: new Date().toISOString()
         })
 
       if (!error) {
@@ -69,6 +70,7 @@ export default function ChatModule() {
       }
     } catch (error) {
       console.error('Error sending message:', error)
+      alert('Error sending message: ' + (error as any).message)
     } finally {
       setSending(false)
     }

@@ -75,7 +75,8 @@ export default function HomeworkModule() {
         .insert({
           homework_id: selectedHomework,
           student_id: student.id,
-          submission_text: submissionText
+          submission_text: submissionText.trim(),
+          submitted_at: new Date().toISOString()
         })
 
       if (!error) {
@@ -86,7 +87,7 @@ export default function HomeworkModule() {
       }
     } catch (error) {
       console.error('Error submitting homework:', error)
-      alert('Failed to submit homework')
+      alert('Failed to submit homework: ' + (error as any).message)
     } finally {
       setSubmitting(false)
     }

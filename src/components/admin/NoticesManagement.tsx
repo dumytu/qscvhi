@@ -68,7 +68,8 @@ export default function NoticesManagement() {
         content: formData.content,
         priority: formData.priority,
         target_class: formData.target_class,
-        expiry_date: formData.expiry_date || null
+        expiry_date: formData.expiry_date ? new Date(formData.expiry_date).toISOString() : null,
+        is_active: true
       }
 
       if (editingNotice) {
@@ -97,7 +98,7 @@ export default function NoticesManagement() {
       }
     } catch (error) {
       console.error('Error saving notice:', error)
-      alert('Error saving notice')
+      alert('Error saving notice: ' + (error as any).message)
     }
   }
 

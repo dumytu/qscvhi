@@ -77,21 +77,25 @@ export default function StudentsManagement({ onNavigate }: StudentsManagementPro
     e.preventDefault()
     
     try {
+      const studentData = {
+        student_id: formData.student_id,
+        name: formData.name,
+        dob: formData.dob,
+        class_id: formData.class_id,
+        roll_number: parseInt(formData.roll_number),
+        fathers_name: formData.fathers_name,
+        mothers_name: formData.mothers_name,
+        address: formData.address,
+        email: formData.email,
+        phone: formData.phone,
+        is_active: true
+      }
+
       if (editingStudent) {
         // Update existing student
         const { error } = await supabase
           .from('students')
-          .update({
-            name: formData.name,
-            dob: formData.dob,
-            class_id: formData.class_id,
-            roll_number: parseInt(formData.roll_number),
-            fathers_name: formData.fathers_name,
-            mothers_name: formData.mothers_name,
-            address: formData.address,
-            email: formData.email,
-            phone: formData.phone
-          })
+          .update(studentData)
           .eq('id', editingStudent.id)
 
         if (!error) {
@@ -103,18 +107,7 @@ export default function StudentsManagement({ onNavigate }: StudentsManagementPro
         // Add new student
         const { error } = await supabase
           .from('students')
-          .insert({
-            student_id: formData.student_id,
-            name: formData.name,
-            dob: formData.dob,
-            class_id: formData.class_id,
-            roll_number: parseInt(formData.roll_number),
-            fathers_name: formData.fathers_name,
-            mothers_name: formData.mothers_name,
-            address: formData.address,
-            email: formData.email,
-            phone: formData.phone
-          })
+          .insert(studentData)
 
         if (!error) {
           alert('Student added successfully!')
@@ -124,7 +117,7 @@ export default function StudentsManagement({ onNavigate }: StudentsManagementPro
       }
     } catch (error) {
       console.error('Error saving student:', error)
-      alert('Error saving student')
+      alert('Error saving student: ' + (error as any).message)
     }
   }
 

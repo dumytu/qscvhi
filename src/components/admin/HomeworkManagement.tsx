@@ -92,7 +92,7 @@ export default function HomeworkManagement() {
         description: formData.description,
         subject: formData.subject,
         class_id: formData.class_id,
-        deadline: formData.deadline,
+        deadline: new Date(formData.deadline).toISOString(),
         is_active: true
       }
 
@@ -120,7 +120,7 @@ export default function HomeworkManagement() {
       }
     } catch (error) {
       console.error('Error saving homework:', error)
-      alert('Error saving homework')
+      alert('Error saving homework: ' + (error as any).message)
     }
   }
 
