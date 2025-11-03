@@ -13,6 +13,16 @@ import VoiceLinkModule from './components/student/VoiceLinkModule'
 import AIDoubtModule from './components/student/AIDoubtModule'
 import AdminDashboard from './components/admin/AdminDashboard'
 import AdminNavigation from './components/admin/AdminNavigation'
+import StudentsManagement from './components/admin/StudentsManagement'
+import LibraryManagement from './components/admin/LibraryManagement'
+import HomeworkManagement from './components/admin/HomeworkManagement'
+import ResultsManagement from './components/admin/ResultsManagement'
+import AttendanceManagement from './components/admin/AttendanceManagement'
+import NoticesManagement from './components/admin/NoticesManagement'
+import VoiceLinkManagement from './components/admin/VoiceLinkManagement'
+import MessagesManagement from './components/admin/MessagesManagement'
+import AIQueriesManagement from './components/admin/AIQueriesManagement'
+import SettingsManagement from './components/admin/SettingsManagement'
 import type { Student, Admin } from './lib/supabase'
 
 type UserType = 'student' | 'admin' | null
@@ -79,17 +89,16 @@ function App() {
         />
         <div className="flex-1 overflow-hidden">
           {activePage === 'dashboard' && <AdminDashboard onNavigate={handleNavigate} />}
-          {/* Add other admin pages here */}
-          {activePage !== 'dashboard' && (
-            <div className="p-6">
-              <div className="bg-green-50 rounded-lg p-6">
-                <h2 className="text-xl font-bold text-green-900 mb-2">
-                  {activePage.charAt(0).toUpperCase() + activePage.slice(1)} Module
-                </h2>
-                <p className="text-green-800">This admin module is coming soon...</p>
-              </div>
-            </div>
-          )}
+          {(activePage === 'students' || activePage === 'students-add') && <StudentsManagement onNavigate={handleNavigate} />}
+          {(activePage === 'library' || activePage === 'books' || activePage === 'books-add' || activePage === 'library-requests') && <LibraryManagement />}
+          {(activePage === 'homework' || activePage === 'homework-create' || activePage === 'submissions') && <HomeworkManagement />}
+          {activePage === 'results' && <ResultsManagement />}
+          {activePage === 'attendance' && <AttendanceManagement />}
+          {(activePage === 'notices' || activePage === 'notices-create') && <NoticesManagement />}
+          {activePage === 'voicelink' && <VoiceLinkManagement />}
+          {activePage === 'messages' && <MessagesManagement />}
+          {activePage === 'ai-queries' && <AIQueriesManagement />}
+          {activePage === 'settings' && <SettingsManagement />}
         </div>
       </div>
     )
