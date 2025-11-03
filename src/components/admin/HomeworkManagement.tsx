@@ -3,7 +3,7 @@ import { supabase } from '../../lib/supabase'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
-import { FileText, Plus, Calendar, Clock, CheckCircle, Eye, Edit, Trash2 } from 'lucide-react'
+import { FileText, Plus, Calendar, Clock, CheckCircle, Eye, CreditCard as Edit, Trash2 } from 'lucide-react'
 import type { Homework, Class, Submission } from '../../lib/supabase'
 
 export default function HomeworkManagement() {

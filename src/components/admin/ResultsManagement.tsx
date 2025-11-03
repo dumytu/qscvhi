@@ -3,7 +3,7 @@ import { supabase } from '../../lib/supabase'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
-import { BarChart3, Plus, Upload, Download, Filter, Edit, Trash2 } from 'lucide-react'
+import { BarChart3, Plus, Upload, Download, Filter, CreditCard as Edit, Trash2 } from 'lucide-react'
 import type { Student, Class } from '../../lib/supabase'
 
 interface Result {

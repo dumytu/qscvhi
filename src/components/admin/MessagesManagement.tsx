@@ -3,7 +3,7 @@ import { supabase } from '../../lib/supabase'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
-import { MessageCircle, Send, Users, User, Broadcast, Filter } from 'lucide-react'
+import { MessageCircle, Send, Users, User, Podcast as Broadcast, Filter } from 'lucide-react'
 import type { Message, Student, Class } from '../../lib/supabase'
 
 export default function MessagesManagement() {
